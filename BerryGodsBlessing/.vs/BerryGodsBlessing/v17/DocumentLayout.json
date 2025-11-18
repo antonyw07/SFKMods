@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Dev\\SFKMods\\BerryGodsBlessing\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{20C3324D-C6EE-4FD1-AEA6-B44B7856EE29}|BerryGodsBlessing\\BerryGodsBlessing.csproj|c:\\dev\\sfkmods\\berrygodsblessing\\berrygodsblessing\\berrygodsblessing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20C3324D-C6EE-4FD1-AEA6-B44B7856EE29}|BerryGodsBlessing\\BerryGodsBlessing.csproj|solutionrelative:berrygodsblessing\\berrygodsblessing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{20C3324D-C6EE-4FD1-AEA6-B44B7856EE29}|BerryGodsBlessing\\BerryGodsBlessing.csproj|c:\\dev\\sfkmods\\berrygodsblessing\\berrygodsblessing\\popupmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{20C3324D-C6EE-4FD1-AEA6-B44B7856EE29}|BerryGodsBlessing\\BerryGodsBlessing.csproj|solutionrelative:berrygodsblessing\\popupmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PopupManager.cs",
+              "DocumentMoniker": "C:\\Dev\\SFKMods\\BerryGodsBlessing\\BerryGodsBlessing\\PopupManager.cs",
+              "RelativeDocumentMoniker": "BerryGodsBlessing\\PopupManager.cs",
+              "ToolTip": "C:\\Dev\\SFKMods\\BerryGodsBlessing\\BerryGodsBlessing\\PopupManager.cs",
+              "RelativeToolTip": "BerryGodsBlessing\\PopupManager.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAowFMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-18T04:19:45.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BerryGodsBlessing.cs",
+              "DocumentMoniker": "C:\\Dev\\SFKMods\\BerryGodsBlessing\\BerryGodsBlessing\\BerryGodsBlessing.cs",
+              "RelativeDocumentMoniker": "BerryGodsBlessing\\BerryGodsBlessing.cs",
+              "ToolTip": "C:\\Dev\\SFKMods\\BerryGodsBlessing\\BerryGodsBlessing\\BerryGodsBlessing.cs",
+              "RelativeToolTip": "BerryGodsBlessing\\BerryGodsBlessing.cs",
+              "ViewState": "AgIAAJEAAAAAAAAAAAAAAGIAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-18T02:29:45.919Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
