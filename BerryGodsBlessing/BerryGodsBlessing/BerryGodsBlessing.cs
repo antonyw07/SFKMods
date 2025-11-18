@@ -45,8 +45,7 @@ namespace BerryGodsBlessing
             float roll = (float)rng.NextDouble();
             Logger.LogInfo($"Roll = {roll}");
 
-            //if (roll <= chance)
-            if (true)
+            if (roll <= chance)
             {
                 IBlessing chosen = RollRandomBlessing();
                 Logger.LogInfo($"✨ A blessing has occurred! The gods grant: {chosen.Name}");
