@@ -127,19 +127,45 @@ namespace DamageRecall
             }
         }
 
-        private void CopyDamageMeter()
+        private void CopyDamageMeter(GameObject sourceMeter)
         {
-            var toCopy = Instantiate(GameObject.Find("TavernMaster/Canvas/Plate/Statistics/DamageMeterContainer/DamageMeter"));
+            var toCopy = Instantiate(sourceMeter);
             toCopy.name = "PersistedDamageMeter";
             toCopy.transform.position = new Vector3(-440f, -320f, 0f);
+
             Scene targetScene = SceneManager.GetSceneByName("PersistentScene");
             SceneManager.MoveGameObjectToScene(toCopy, targetScene);
+            persistentDamageMeter = toCopy;
         }
 
         IEnumerator ExecuteAfterDelay()
         {
-            yield return new WaitForSeconds(1);
-            CopyDamageMeter();
+            GameObject target = null;
+            GameObject initCheck = null;
+
+            // Wait up to 5 seconds for the UI object to exist
+            float timeout = 5f;
+            float elapsed = 0f;
+
+            while (initCheck == null && elapsed < timeout)
+            {
+                initCheck = GameObject.Find("TavernMaster/Canvas/Plate/Statistics/DamageMeterContainer/DamageMeter/ViewPort/Content/Prototype(Clone)");
+                if (target != null)
+                    break;
+
+                elapsed += 0.2f;
+                yield return new WaitForSeconds(0.2f);
+            }
+
+            if (initCheck == null)
+            {
+                Logger.LogError("DamageMeter not found after waiting — cannot copy.");
+                yield break;
+            }
+
+            Logger.LogInfo("DamageMeter found — creating persistent copy.");
+            target = GameObject.Find("TavernMaster/Canvas/Plate/Statistics/DamageMeterContainer/DamageMeter");
+            CopyDamageMeter(target);
         }
 
         private void CreatePopup()
@@ -213,8 +239,6 @@ namespace DamageRecall
 
             RectTransform bTextRT = bTextGO.GetComponent<RectTransform>();
             bTextRT.sizeDelta = btnRT.sizeDelta;
-
-            Logger.LogInfo("Popup successfully created and attached!");
         }
     }
 }
