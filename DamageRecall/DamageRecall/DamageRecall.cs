@@ -1,20 +1,65 @@
 ﻿using BepInEx;
+using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace DamageRecall
 {
-    [BepInPlugin("com.low.damagerecall", "Damage Recall", "1.0.0")]
+    [BepInPlugin("com.low.damagerecall", "Damage Recall", "0.1.1")]
     public class DamageRecallPlugin : BaseUnityPlugin
     {
         private static GameObject popupRoot;  // only created once
         private GameObject persistentDamageMeter;
         private bool isVisible = false;
+        private void EnsureHideManagerGameObjectDisabled()
+        {
+            try
+            {
+                string configPath = Path.Combine(Paths.ConfigPath, "BepInEx.cfg");
+
+                if (!File.Exists(configPath))
+                {
+                    Logger.LogWarning("BepInEx.cfg not found — cannot verify HideManagerGameObject.");
+                    return;
+                }
+
+                var lines = File.ReadAllLines(configPath);
+                bool changed = false;
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    if (lines[i].Trim().StartsWith("HideManagerGameObject"))
+                    {
+                        if (!lines[i].Contains("true"))
+                        {
+                            lines[i] = "HideManagerGameObject = true";
+                            changed = true;
+                        }
+                    }
+                }
+
+                if (changed)
+                {
+                    File.WriteAllLines(configPath, lines);
+                    Logger.LogInfo("Patched BepInEx.cfg → HideManagerGameObject = true");
+                }
+                else
+                {
+                    Logger.LogInfo("HideManagerGameObject already set to true.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError($"Failed to update BepInEx.cfg: {ex}");
+            }
+        }
 
         private void Awake()
         {
+            EnsureHideManagerGameObjectDisabled();
             Logger.LogInfo("Damage Recall loaded.");
             SceneManager.sceneLoaded += OnSceneLoaded;
             SceneManager.sceneUnloaded += OnSceneUnloaded;
