@@ -1,0 +1,7 @@
+{
+    "name": "$MODNAME$",
+    "version_number": "$VERSION$",
+    "website_url": "https://github.com/antonyw07/SFKMods",
+    "description": "A lightweight BepInEx mod for Super Fantasy Kingdom that allows you to view the damage breakdown from previously played days",
+    "dependencies": ["BepInEx-BepInExPack-5.4.2304"]
+}
