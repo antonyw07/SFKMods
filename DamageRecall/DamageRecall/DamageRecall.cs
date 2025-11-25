@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using SFKUILib;
 
 namespace DamageRecall
 {
@@ -170,75 +171,84 @@ namespace DamageRecall
 
         private void CreatePopup()
         {
-            // Find the game's canvas
-            GameObject canvasObj = GameObject.Find("Canvas");
-            if (!canvasObj)
-            {
-                Logger.LogWarning("Canvas not found in scene!");
-                return;
-            }
+            var overlay = UIOverlay.Create(
+                "DamageRecall",
+                new Vector2(-500, 200),
+                bgMode: OverlayBackgroundMode.PanelFixed,
+                bgColor: new Color(0f, 0f, 0f, 0.6f),
+                panelSize: new Vector2(350, 200)
+                )
+                .AddHeader("Damage Recall loaded")
+                .AddText("\n\n\n\n\nDamage from previous played day can \nnow be opened and closed using \nthe ~ key.");
+            //    // Find the game's canvas
+            //    GameObject canvasObj = GameObject.Find("Canvas");
+            //    if (!canvasObj)
+            //    {
+            //        Logger.LogWarning("Canvas not found in scene!");
+            //        return;
+            //    }
 
-            // If popup was already created, just re-parent it
-            if (popupRoot != null)
-            {
-                popupRoot.transform.SetParent(canvasObj.transform, false);
-                return;
-            }
+            //    // If popup was already created, just re-parent it
+            //    if (popupRoot != null)
+            //    {
+            //        popupRoot.transform.SetParent(canvasObj.transform, false);
+            //        return;
+            //    }
 
-            // === CREATE IT FOR THE FIRST TIME ===
-            popupRoot = new GameObject("ModPopup");
-            popupRoot.transform.SetParent(canvasObj.transform, false);
+            //    // === CREATE IT FOR THE FIRST TIME ===
+            //    popupRoot = new GameObject("ModPopup");
+            //    popupRoot.transform.SetParent(canvasObj.transform, false);
 
-            RectTransform rootRT = popupRoot.AddComponent<RectTransform>();
-            rootRT.sizeDelta = new Vector2(400, 200);
-            rootRT.anchoredPosition = Vector2.zero;
+            //    RectTransform rootRT = popupRoot.AddComponent<RectTransform>();
+            //    rootRT.sizeDelta = new Vector2(400, 200);
+            //    rootRT.anchoredPosition = Vector2.zero;
 
-            // Background Panel
-            Image bg = popupRoot.AddComponent<Image>();
-            bg.color = new Color(0, 0, 0, 0.75f);
+            //    // Background Panel
+            //    Image bg = popupRoot.AddComponent<Image>();
+            //    bg.color = new Color(0, 0, 0, 0.75f);
 
-            // Text
-            var textGO = new GameObject("PopupText");
-            textGO.transform.SetParent(popupRoot.transform, false);
-            Text text = textGO.AddComponent<Text>();
-            text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            text.text = "Damage Recall loaded.\n\nDamage from previous played day can now be opened and closed using the ~ key.";
-            text.alignment = TextAnchor.MiddleCenter;
-            text.color = Color.white;
+            //    // Text
+            //    var textGO = new GameObject("PopupText");
+            //    textGO.transform.SetParent(popupRoot.transform, false);
+            //    Text text = textGO.AddComponent<Text>();
+            //    text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            //    text.text = "Damage Recall loaded.\n\nDamage from previous played day can now be opened and closed using the ~ key.";
+            //    text.alignment = TextAnchor.MiddleCenter;
+            //    text.color = Color.white;
 
-            RectTransform textRT = textGO.GetComponent<RectTransform>();
-            textRT.sizeDelta = new Vector2(380, 120);
-            textRT.anchoredPosition = new Vector2(0, 40);
+            //    RectTransform textRT = textGO.GetComponent<RectTransform>();
+            //    textRT.sizeDelta = new Vector2(380, 120);
+            //    textRT.anchoredPosition = new Vector2(0, 40);
 
-            // Close Button
-            var buttonGO = new GameObject("CloseButton");
-            buttonGO.transform.SetParent(popupRoot.transform, false);
+            //    // Close Button
+            //    var buttonGO = new GameObject("CloseButton");
+            //    buttonGO.transform.SetParent(popupRoot.transform, false);
 
-            Image btnImage = buttonGO.AddComponent<Image>();
-            btnImage.color = new Color(0.8f, 0.2f, 0.2f, 1f);
+            //    Image btnImage = buttonGO.AddComponent<Image>();
+            //    btnImage.color = new Color(0.8f, 0.2f, 0.2f, 1f);
 
-            Button btn = buttonGO.AddComponent<Button>();
-            btn.onClick.AddListener(() =>
-            {
-                popupRoot.SetActive(false);  // hide but don't destroy
-            });
+            //    Button btn = buttonGO.AddComponent<Button>();
+            //    btn.onClick.AddListener(() =>
+            //    {
+            //        popupRoot.SetActive(false);  // hide but don't destroy
+            //    });
 
-            RectTransform btnRT = buttonGO.GetComponent<RectTransform>();
-            btnRT.sizeDelta = new Vector2(120, 40);
-            btnRT.anchoredPosition = new Vector2(0, -60);
+            //    RectTransform btnRT = buttonGO.GetComponent<RectTransform>();
+            //    btnRT.sizeDelta = new Vector2(120, 40);
+            //    btnRT.anchoredPosition = new Vector2(0, -60);
 
-            // Button label
-            var bTextGO = new GameObject("ButtonText");
-            bTextGO.transform.SetParent(buttonGO.transform, false);
+            //    // Button label
+            //    var bTextGO = new GameObject("ButtonText");
+            //    bTextGO.transform.SetParent(buttonGO.transform, false);
 
-            Text btnText = bTextGO.AddComponent<Text>();
-            btnText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
-            btnText.text = "Close";
-            btnText.alignment = TextAnchor.MiddleCenter;
-            btnText.color = Color.white;
+            //    Text btnText = bTextGO.AddComponent<Text>();
+            //    btnText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            //    btnText.text = "Close";
+            //    btnText.alignment = TextAnchor.MiddleCenter;
+            //    btnText.color = Color.white;
 
-            RectTransform bTextRT = bTextGO.GetComponent<RectTransform>();
-            bTextRT.sizeDelta = btnRT.sizeDelta;
+            //    RectTransform bTextRT = bTextGO.GetComponent<RectTransform>();
+            //    bTextRT.sizeDelta = btnRT.sizeDelta;
         }
     }
 }
