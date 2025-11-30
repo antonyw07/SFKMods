@@ -1,0 +1,99 @@
+﻿<Project>
+
+  <!-- NuGet packages -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.3" PrivateAssets="all" />
+    <PackageReference Include="MicroUtils.HarmonyAnalyzers" Version="*-*" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="$(SuperFantasyKingdomData)\Managed\*.dll" Publicize="true" Private="false" />
+    <Reference Include="$(SuperFantasyKingdomData)\..\BepInEx\core\*.dll" Private="false" />
+    <Reference Include="$(SuperFantasyKingdomData)\..\BepInEx\plugins\SFKUILib\SFKUILib.dll" Private="false" />
+    <Reference Remove="$(SuperFantasyKingdomData)\..\BepInEx\core\0Harmony20.dll" />
+    <Reference Remove="$(SuperFantasyKingdomData)\Managed\System*.dll" />
+    <Reference Remove="$(SuperFantasyKingdomData)\Managed\mscorlib.dll*" />
+  </ItemGroup>
+
+  <!-- Deploy logic -->
+  <Target Name="Deploy" AfterTargets="Build">
+    <ItemGroup>
+      <Files Include="$(TargetDir)\**\*.*" />
+    </ItemGroup>
+
+    <Copy
+      SourceFiles="@(Files)"
+      DestinationFiles="@(Files -> '$(SuperFantasyKingdomData)\..\BepInEx\plugins\$(AssemblyName)\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+    <ZipDirectory
+      SourceDirectory="$(MSBuildProjectDirectory)\$(OutputPath)"
+      DestinationFile="$(MSBuildProjectDirectory)\$(OutputPath)\..\$(AssemblyName)-$(Version).zip"
+      Overwrite="true" />
+  </Target>
+  
+  <!-- Thunderstore package (Release only) -->
+  <Target Name="ThunderstorePackage"
+          AfterTargets="Build"
+          Condition="'$(Configuration)' == 'Release'">
+
+    <!-- Package metadata.
+         These default from csproj if you set them there:
+         - AssemblyName / Product / Version
+         You can override here if you want. -->
+    <PropertyGroup>
+      <ThunderstoreWebsiteUrl Condition="'$(ThunderstoreWebsiteUrl)'==''">https://github.com/antonyw07/SFKMods</ThunderstoreWebsiteUrl>
+      <ThunderstoreDependencies Condition="'$(ThunderstoreDependencies)'==''">["BepInEx-BepInExPack-5.4.2304"]</ThunderstoreDependencies>
+
+      <!-- Staging + zip output -->
+      <ThunderstoreStageDir>$(MSBuildProjectDirectory)\thunderstore\$(AssemblyName)</ThunderstoreStageDir>
+      <ThunderstoreZip>$(MSBuildProjectDirectory)\thunderstore\$(AssemblyName)-$(Version).zip</ThunderstoreZip>
+    </PropertyGroup>
+
+    <!-- Clean + recreate staging dir -->
+    <RemoveDir Directories="$(ThunderstoreStageDir)" Condition="Exists('$(ThunderstoreStageDir)')" />
+    <MakeDir Directories="$(ThunderstoreStageDir)" />
+
+    <!-- Copy main plugin DLL (and pdb if you want it) -->
+    <ItemGroup>
+      <PluginDll Include="$(TargetPath)" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(PluginDll)" DestinationFolder="$(ThunderstoreStageDir)" />
+
+    <!-- manifest.json directly from csproj -->
+    <ItemGroup>
+      <ManifestLines Include="{" />
+      <ManifestLines Include="  &quot;name&quot;: &quot;$(Product)&quot;," />
+      <ManifestLines Include="  &quot;version_number&quot;: &quot;$(Version)&quot;," />
+      <ManifestLines Include="  &quot;website_url&quot;: &quot;$(ThunderstoreWebsiteUrl)&quot;," />
+      <ManifestLines Include="  &quot;description&quot;: &quot;$(ThunderstoreDescription)&quot;," />
+      <ManifestLines Include="  &quot;dependencies&quot;: $(ThunderstoreDependencies)" />
+      <ManifestLines Include="}" />
+    </ItemGroup>
+
+    <WriteLinesToFile
+      File="$(ThunderstoreStageDir)\manifest.json"
+      Lines="@(ManifestLines)"
+      Overwrite="true"
+      Encoding="UTF-8" />
+
+    <!-- Optional extras if present -->
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\README.md"
+          DestinationFolder="$(ThunderstoreStageDir)"
+          Condition="Exists('$(MSBuildProjectDirectory)\README.md')" />
+
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\icon.png"
+          DestinationFolder="$(ThunderstoreStageDir)"
+          Condition="Exists('$(MSBuildProjectDirectory)\icon.png')" />
+
+    <!-- Zip staging folder -->
+    <ZipDirectory
+      SourceDirectory="$(ThunderstoreStageDir)"
+      DestinationFile="$(ThunderstoreZip)"
+      Overwrite="true" />
+
+    <Message Importance="high" Text="Thunderstore package created: $(ThunderstoreZip)" />
+  </Target>
+
+</Project>
